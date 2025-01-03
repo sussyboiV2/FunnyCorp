@@ -1,0 +1,479 @@
+<html><head><base href="." /><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Funny Corp</title>
+<style>
+body {
+    margin: 0;
+    background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
+    font-family: 'Arial', sans-serif;
+    min-height: 200vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        45deg,
+        rgba(68, 35, 87, 0.8),
+        rgba(45, 45, 45, 0.8),
+        rgba(83, 43, 105, 0.8)
+    );
+    animation: warpBackground 15s ease-in-out infinite;
+    z-index: -1;
+}
+
+.popup-menu {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(33, 33, 33, 0.95);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    z-index: 1000;
+    animation: popIn 0.3s ease-out;
+    max-width: 80%;
+    width: 400px;
+}
+
+.code-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(33, 33, 33, 0.95);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    z-index: 1000;
+    animation: popIn 0.3s ease-out;
+    max-width: 80%;
+    width: 400px;
+}
+
+.code-box {
+    background: #1a1a1a;
+    border: 1px solid #3a3a3a;
+    padding: 1rem;
+    border-radius: 5px;
+    color: #00ff00;
+    font-family: monospace;
+    margin: 1rem 0;
+    word-wrap: break-word;
+    position: relative;
+}
+
+.copy-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #2196F3;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.copy-button:hover {
+    background: #1976D2;
+}
+
+.popup-menu.active, .code-popup.active, .captcha-popup.active {
+    display: block;
+}
+
+.popup-menu h2 {
+    color: #2196F3;
+    margin-bottom: 1rem;
+}
+
+.popup-menu p {
+    color: #e0e0e0;
+    margin-bottom: 1rem;
+}
+
+.popup-menu button {
+    background: #2196F3;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.popup-menu button:hover {
+    background: #1976D2;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 999;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.overlay.active {
+    display: block;
+}
+
+@keyframes popIn {
+    from {
+        transform: translate(-50%, -60%);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes warpBackground {
+    0%, 100% {
+        transform: scale(1.1) rotate(0deg);
+        filter: hue-rotate(0deg);
+    }
+    25% {
+        transform: scale(1.2) rotate(3deg);
+        filter: hue-rotate(30deg);
+    }
+    50% {
+        transform: scale(1.1) rotate(-3deg);
+        filter: hue-rotate(60deg);
+    }
+    75% {
+        transform: scale(1.2) rotate(2deg);
+        filter: hue-rotate(30deg);
+    }
+}
+
+.hero-section {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.content-section {
+    padding: 2rem;
+    text-align: center;
+    color: #e0e0e0;
+    font-size: 1.5rem;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+}
+
+.logo {
+    font-size: 5rem;
+    color: #e0e0e0;
+    text-shadow: 0 0 15px rgba(255,255,255,0.5);
+    animation: float 3s ease-in-out infinite;
+    cursor: pointer;
+    transition: transform 0.3s;
+    font-weight: 300;
+    letter-spacing: 3px;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+    color: #fff;
+}
+
+.funny-button {
+    background-color: #2196F3;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-family: 'Arial', sans-serif;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(33,150,243,0.3);
+    margin-top: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.funny-button:hover {
+    transform: translateY(-2px);
+    background-color: #1976D2;
+    box-shadow: 0 6px 20px rgba(33,150,243,0.5);
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+.funny-icon {
+    display: inline-block;
+    margin-left: 10px;
+    animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce-arrow 2s infinite;
+    opacity: 0.7;
+}
+
+@keyframes bounce-arrow {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateY(10px);
+    }
+}
+
+.captcha-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.captcha-box {
+    background: #1a1a1a;
+    padding: 15px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.captcha-text {
+    font-family: 'Courier New', monospace;
+    font-size: 24px;
+    color: #e0e0e0;
+    letter-spacing: 5px;
+    user-select: none;
+    text-decoration: line-through;
+    transform: skew(-5deg);
+    display: inline-block;
+    background: linear-gradient(45deg, #2196F3, #1976D2);
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.captcha-input {
+    margin: 10px 0;
+    padding: 8px;
+    width: 200px;
+    border: 2px solid #2196F3;
+    border-radius: 5px;
+    background: #1a1a1a;
+    color: #e0e0e0;
+    text-align: center;
+}
+
+.verify-button {
+    background: #2196F3;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.verify-button:hover {
+    background: #1976D2;
+}
+
+.key-display {
+    background: #1a1a1a;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    color: #00ff00;
+    font-family: monospace;
+    display: none;
+}
+</style>
+</head>
+<body>
+    <div class="hero-section">
+        <div class="logo">
+            Funny Corp
+            <svg class="funny-icon" width="50" height="50" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="#2196F3"/>
+                <circle cx="35" cy="40" r="5" fill="white"/>
+                <circle cx="65" cy="40" r="5" fill="white"/>
+                <path d="M 30 65 Q 50 85 70 65" stroke="white" stroke-width="5" fill="none"/>
+            </svg>
+        </div>
+        <svg class="scroll-indicator" width="40" height="40" viewBox="0 0 24 24">
+            <path d="M 7 10 l 5 5 5-5" stroke="#e0e0e0" stroke-width="2" fill="none"/>
+        </svg>
+    </div>
+    <div class="content-section">
+        <p>Welcome to Funny Corp's OFFICIAL website!</p>
+        <p>We promise MID quality scripts and stuff.</p>
+        
+        <p>Click on the buttons below for scripts.</p>
+        <button class="funny-button" onclick="showPopupMenu()">Get Funny GUI V1</button>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup-menu" id="popup-menu">
+        <h2>Funny GUI V1</h2>
+        <p>A standerd script hub mainly for trolling. THIS SCRIPT REQUIRES A KEY!</p>
+        <button onclick="showCodePopup()">Yes, Get Script</button>
+        <button onclick="closePopupMenu()">Cancel</button>
+    </div>
+
+    <div class="code-popup" id="code-popup">
+        <h2>Script Code</h2>
+        <p>You need a key to use this script.</p>
+        <button onclick="showCaptchaPopup()">Get Key</button>
+        <div class="code-box">
+            <button class="copy-button" onclick="copyCode()">Copy</button>
+            <code id="script-code">loadstring(game:HttpGet('https://raw.githubusercontent.com/sussyboiV2/FUNNYGUIMAIN/refs/heads/main/MainTHingy.txt'))()</code>
+        </div>
+        <button onclick="closeCodePopup()">Close</button>
+    </div>
+
+    <div class="popup-menu captcha-popup" id="captcha-popup">
+        <h2>Verify Captcha</h2>
+        <div class="captcha-container">
+            <div class="captcha-box">
+                <span class="captcha-text" id="captcha-text"></span>
+            </div>
+            <input type="text" class="captcha-input" id="captcha-input" placeholder="Enter captcha">
+            <button class="verify-button" onclick="verifyCaptcha()">Verify</button>
+        </div>
+        <div class="key-display" id="key-display">
+            <p>Your key is: <span id="key-text">SPRUNKI-IS-MID</span></p>
+            <button class="copy-button" onclick="copyKey()">Copy Key</button>
+        </div>
+        <button onclick="closeCaptchaPopup()">Close</button>
+    </div>
+
+<script>
+document.querySelector('.logo').addEventListener('click', function() {
+    this.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+        this.style.transform = '';
+    }, 200);
+});
+
+function showPopupMenu() {
+    document.getElementById('overlay').classList.add('active');
+    document.getElementById('popup-menu').classList.add('active');
+}
+
+function closePopupMenu() {
+    document.getElementById('overlay').classList.remove('active');
+    document.getElementById('popup-menu').classList.remove('active');
+}
+
+function showCodePopup() {
+    document.getElementById('popup-menu').classList.remove('active');
+    document.getElementById('code-popup').classList.add('active');
+}
+
+function closeCodePopup() {
+    document.getElementById('overlay').classList.remove('active');
+    document.getElementById('code-popup').classList.remove('active');
+}
+
+function copyCode() {
+    const codeText = document.getElementById('script-code').innerText;
+    navigator.clipboard.writeText(codeText).then(() => {
+        const copyButton = document.querySelector('.copy-button');
+        copyButton.textContent = 'Copied!';
+        setTimeout(() => {
+            copyButton.textContent = 'Copy';
+        }, 2000);
+    });
+}
+
+function generateCaptcha() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
+    let captcha = '';
+    for(let i = 0; i < 6; i++) {
+        captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return captcha;
+}
+
+function showCaptchaPopup() {
+    const captchaText = generateCaptcha();
+    document.getElementById('captcha-text').textContent = captchaText;
+    document.getElementById('captcha-popup').classList.add('active');
+    document.getElementById('key-display').style.display = 'none';
+    document.getElementById('captcha-input').value = '';
+    document.getElementById('overlay').classList.add('active');
+}
+
+function closeCaptchaPopup() {
+    document.getElementById('captcha-popup').classList.remove('active');
+    document.getElementById('overlay').classList.remove('active');
+}
+
+function verifyCaptcha() {
+    const input = document.getElementById('captcha-input').value;
+    const captcha = document.getElementById('captcha-text').textContent;
+    
+    if(input === captcha) {
+        document.getElementById('key-display').style.display = 'block';
+        document.getElementById('captcha-input').style.borderColor = '#4CAF50';
+    } else {
+        document.getElementById('captcha-input').style.borderColor = '#f44336';
+        document.getElementById('captcha-text').textContent = generateCaptcha();
+    }
+}
+
+function copyKey() {
+    const keyText = document.getElementById('key-text').textContent;
+    navigator.clipboard.writeText(keyText).then(() => {
+        const copyButton = document.querySelector('#key-display .copy-button');
+        copyButton.textContent = 'Copied!';
+        setTimeout(() => {
+            copyButton.textContent = 'Copy Key';
+        }, 2000);
+    });
+}
+
+document.getElementById('overlay').addEventListener('click', function() {
+    closePopupMenu();
+    closeCodePopup();
+    closeCaptchaPopup();
+});
+</script>
+</body></html>
